@@ -1,0 +1,113 @@
+/* Background and layout */
+body, .greeting-card-page {
+  text-align: center;
+  background-color: #000;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+}
+
+/* Firecracker Canvas */
+.firecracker-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.tap-text {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  color: #ffe0ec;
+  font-size: 18px;
+  z-index: 10;
+}
+
+.card__container {
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  perspective: 1400px;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.card {
+  width: 280px;
+  height: 360px;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 1s ease;
+  position: relative;
+}
+
+.greeting-card-page.open .card {
+  transform: rotateY(180deg);
+}
+
+.card__panel {
+  border: 1px solid #ffaad4;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 1s ease;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+.card__panel--front {
+  background: #ffb3c6;
+  color: white;
+  z-index: 2;
+  font-size: 22px;
+  font-weight: bold;
+  box-shadow: 0 10px 20px rgba(255, 64, 129, 0.2);
+}
+
+.card__panel--inside-left {
+  display: none;
+}
+
+.card__panel--inside-right {
+  background: #fffaf5;
+  color: #444;
+  transform: rotateY(180deg);
+  z-index: 1;
+  box-shadow: inset 0 0 20px rgba(255, 105, 135, 0.1);
+}
+
+.card__panel--inside-right p {
+  font-size: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.btn-gallery {
+  padding: 8px 16px;
+  font-size: 14px;
+  background: linear-gradient(45deg, #ff4081, #ff6b9a);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-gallery:hover {
+  background: linear-gradient(45deg, #ff6b9a, #ff4081);
+}

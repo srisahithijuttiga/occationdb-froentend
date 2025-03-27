@@ -1,0 +1,131 @@
+.surprise-landing {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #ffe5ec, #ffc2d1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.celebration-background {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center,#cd6982, #ffd6e0);
+  animation: bgPulse 10s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes bgPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.surprise-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+}
+
+.surprise-content h1 {
+  font-size: 2.8rem;
+  color: #fff;
+  margin-bottom: 10px;
+  animation: popIn 1s ease-in;
+}
+
+.surprise-content h2 {
+  font-size: 2rem;
+  color: #ffe3ec;
+  margin-bottom: 20px;
+  animation: popIn 1.3s ease-in;
+}
+
+.surprise-content button {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  background-color: #ff4b91;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  animation: popIn 1.8s ease-in;
+}
+
+.surprise-content button:hover {
+  background-color: #ff1e75;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.hearts-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -40px;
+  width: 32px;
+  height: 32px;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/833/833472.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: floatHeart linear forwards;
+  z-index: 2;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+
+
+
+/* Confetti ribbon canvas */
+#ribbon-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.landing-loading {
+  color: #fff;
+  font-size: 1.5rem;
+  text-align: center;
+  padding-top: 100px;
+}

@@ -1,0 +1,417 @@
+.gallery-3d-wrapper {
+  background: linear-gradient(to right, #ffd6e0, #ffe0ec, #ffd6e0);
+  min-height: 100vh;
+  overflow: hidden;
+  text-align: center;
+  padding: 50px 10px;
+  font-family: "Comic Sans MS", cursive;
+  position: relative;
+}
+
+.gallery-title {
+  font-size: 2.2rem;
+  color: #ff4b91;
+  margin-bottom: 25px;
+}
+
+.carousel-scene {
+  width: 100%;
+  height: 400px;
+  perspective: 1000px;
+  margin-bottom: 20px;
+}
+
+.carousel {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s ease-in-out;
+  position: relative;
+}
+
+.carousel-item {
+  position: absolute;
+  width: 200px;
+  height: 260px;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform-origin: center;
+  margin-left: -100px;
+  margin-top: -130px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hover-text {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-item:hover .hover-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.carousel-controls button {
+  padding: 6px 14px;
+  width: 50px;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  border: none;
+  background-color: #ff4b91;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-controls button:hover {
+  background-color: #ff1e75;
+}
+
+.see-surprise-btn {
+  padding: 10px 22px;
+  width: 230px;
+  font-size: 1.05rem;
+  background-color: #ff4b91;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.see-surprise-btn:hover {
+  background-color: #ff1e75;
+}
+
+@media (max-width: 480px) {
+  .carousel-item {
+    width: 160px;
+    height: 200px;
+    margin-left: -80px;
+    margin-top: -100px;
+  }
+
+  .hover-text {
+    font-size: 0.8rem;
+  }
+
+  .carousel-controls button {
+    width: 50px;
+    padding: 5px 12px;
+    font-size: 1rem;
+  }
+
+  .see-surprise-btn {
+    width: 230px;
+    font-size: 0.95rem;
+    padding: 8px 20px;
+  }
+}
+.carousel-item {
+  position: absolute;
+  width: 200px;
+  zoom: 1;
+  height: 260px;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform-origin: center;
+  margin-left: -100px;
+  margin-top: -130px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-item:hover {
+  transform: scale(1.05) translateZ(10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+.carousel-item {
+  position: absolute;
+  width: 200px;
+  height: 260px;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform-origin: center;
+  margin-left: -100px;
+  margin-top: -130px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.carousel-item:hover img {
+  transform: scale(1.1); /* ✅ Zoom effect */
+}
+
+.hover-text {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-item:hover .hover-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hearts-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -40px;
+  width: 28px;
+  height: 28px;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/833/833472.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: floatHeart linear;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-50vh) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+    opacity: 0;
+  }
+}
+
+
+/* Gallery Page - General Layout */
+.gallery-3d-wrapper {
+  background: linear-gradient(to right, #ffd6e0, #ffe0ec, #ffd6e0);
+  min-height: 100vh;
+  overflow: hidden;
+  text-align: center;
+  padding: 50px 10px;
+  font-family: "Comic Sans MS", cursive;
+  position: relative;
+}
+
+/* Gallery Title */
+.gallery-title {
+  font-size: 2.5rem; /* Increased font size */
+  color: #ff4b91;
+  margin-bottom: 30px;
+  font-weight: bold;
+  text-shadow: 1px 1px #fff;
+}
+
+/* Carousel Scene (3D Effect) */
+.carousel-scene {
+  width: 100%;
+  height: 500px; /* Increased height */
+  perspective: 1200px; /* Deeper perspective */
+  margin-bottom: 30px;
+}
+
+/* Carousel Styling */
+.carousel {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s ease-in-out;
+  position: relative;
+}
+
+/* Carousel Items (Images) */
+.carousel-item {
+  position: absolute;
+  width: 250px; /* Increased width */
+  height: 350px; /* Increased height */
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform-origin: center;
+  margin-left: -125px;
+  margin-top: -175px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* Zoom effect on hover */
+.carousel-item:hover img {
+  transform: scale(1.1); /* Larger zoom effect */
+}
+
+.carousel-item:hover {
+  transform: scale(1.1) translateZ(10px); /* Increased zoom effect */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover Text for Images */
+.hover-text {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-item:hover .hover-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Carousel Controls - Navigation buttons */
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.carousel-controls button {
+  padding: 12px 12px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  border: none;
+  background-color: #ff4b91;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-controls button:hover {
+  background-color: #ff1e75;
+}
+
+/* "See Surprise" Button */
+.see-surprise-btn {
+  padding: 12px 24px;
+  width: 250px;
+  font-size: 1.1rem;
+  background-color: #ff4b91;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.see-surprise-btn:hover {
+  background-color: #ff1e75;
+}
+
+/* Floating Hearts Animation */
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-50vh) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+    opacity: 0;
+  }
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -40px;
+  width: 28px;
+  height: 28px;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/833/833472.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: floatHeart linear;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .carousel-item {
+    width: 180px; /* Smaller width for mobile */
+    height: 250px; /* Smaller height for mobile */
+    margin-left: -90px;
+    margin-top: -125px;
+  }
+
+  .carousel-controls button {
+    width: 50px;
+    padding: 5px 12px;
+    font-size: 1rem;
+  }
+
+  .see-surprise-btn {
+    width: 230px;
+    font-size: 0.95rem;
+    padding: 8px 20px;
+  }
+}
+
+
+
+

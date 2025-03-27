@@ -1,0 +1,85 @@
+/* SurprisePage.css */
+
+.surprise-page {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #ffe0ec, #ffc2d1);
+    padding: 40px 20px;
+    font-family: 'Comic Sans MS', cursive;
+    text-align: center;
+    position: relative;
+  }
+  
+  .title {
+    font-size: 2.2rem;
+    color: #ff4b91;
+    margin-bottom: 30px;
+  }
+  
+  .video-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .video-name-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #ff4b91;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .video-name-btn:hover {
+    background-color: #ff1e75;
+  }
+  
+  .video-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  
+  .popup-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .popup-video {
+    width: 100%;
+    max-width: 720px;
+    max-height: 80vh;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: -60px;
+    right: -115px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    z-index: 11;
+  }
+  
+  .final-message {
+    margin-top: 40px;
+    font-size: 1.4rem;
+    color: #d6336c;
+  }
+  

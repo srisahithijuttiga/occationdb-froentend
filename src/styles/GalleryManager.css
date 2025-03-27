@@ -1,0 +1,275 @@
+/* Ensure the HTML and Body have 100% height and enable scrolling */
+html, body {
+  height: 100%; /* Ensure the entire page has a height of 100% */
+  margin: 0; /* Remove any default margin */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: auto; /* Enable vertical scroll */
+}
+
+/* Ensure .gallery-manager takes full page height and can scroll */
+.gallery-manager {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh; /* Full height of the page */
+  padding: 20px;
+  background: linear-gradient(135deg, #ffe0ec, #fef3c7); /* Background color */
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  font-family: "Segoe UI", sans-serif;
+  width: 100%;
+  position: relative;
+  overflow-y: auto; /* Allow vertical scroll */
+  padding-bottom: 30px; /* Make room for scroll */
+}
+
+/* Title/Header styling */
+h2 {
+  font-size: 32px;
+  color: #ff4081;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-shadow: 1px 1px #fff;
+  text-align: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Custom message editor */
+.custom-message-editor {
+  width: 100%;
+  max-width: 600px;
+  background: #fff7f0;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(255, 64, 129, 0.2);
+  margin-bottom: 30px;
+}
+
+.custom-message-editor h4 {
+  font-size: 24px;
+  color: #ff4081;
+  margin-bottom: 10px;
+}
+
+.custom-message-editor .input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ffd6e7;
+  border-radius: 10px;
+  font-size: 16px;
+  background: #fff;
+  margin-bottom: 15px;
+}
+
+.custom-message-editor button {
+  padding: 10px 20px;
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  width: 48%;
+  margin-right: 4%;
+}
+
+.custom-message-editor button:hover {
+  background-color: #ff6b9a;
+}
+
+.custom-message-editor button.danger {
+  background-color: #ff5c8d;
+}
+
+.custom-message-editor button.danger:hover {
+  background-color: #ff4081;
+}
+
+/* Upload section for image, video, and voice */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+/* Each upload box (Image, Video, Voice) */
+.upload-box {
+  width: 100%;
+  max-width: 350px;
+  margin: 15px 0;
+  padding: 20px;
+  background: #fff7f0;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(255, 64, 129, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-box h3 {
+  font-size: 20px;
+  color: #ff4081;
+  margin-bottom: 10px;
+}
+
+.upload-box input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #ffd6e7;
+  border-radius: 10px;
+  font-size: 16px;
+  background: #fff;
+}
+
+.upload-box input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #ffd6e7;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.upload-box button {
+  width: 100%;
+  padding: 10px;
+  background: #ff4081;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.upload-box button:hover {
+  background: #ff6b9a;
+}
+
+/* Media gallery section */
+.media-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+  max-height: 500px; /* Limit gallery height */
+  overflow-y: auto; /* Make gallery scrollable */
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+/* Media item (Image, Video) styling */
+.media-item {
+  margin: 15px;
+  width: 200px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(255, 105, 135, 0.1);
+}
+
+.media-item img,
+.media-item video {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 150px;
+  border-radius: 10px;
+}
+
+.media-item p {
+  font-size: 14px;
+  color: #444;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* Delete buttons styling */
+button {
+  padding: 8px 12px;
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 5px;
+}
+
+button:hover {
+  background-color: #ff6b9a;
+}
+
+/* Voice message section styling */
+.voice-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff7f0;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(255, 105, 135, 0.1);
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.voice-message p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.voice-message button {
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.voice-message button:hover {
+  background-color: #ff6b9a;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .upload-box {
+    max-width: 90%;
+  }
+
+  .media-gallery {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .media-item {
+    width: 80%;
+    height: auto;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .upload-container {
+    width: 100%;
+  }
+
+  .voice-message {
+    width: 90%;
+  }
+}
