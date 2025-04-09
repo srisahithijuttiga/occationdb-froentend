@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Fireworks from "./Fireworks";
 import "../styles/GreetingCardPage.css";
@@ -9,7 +9,9 @@ const GreetingCardPage = () => {
   const [person, setPerson] = useState(null);
   const [open, setOpen] = useState(false);
   const [audio, setAudio] = useState(null);
-  const [showFireworks, setShowFireworks] = useState(false);
+  const [showFireworks, setShowFireworks] = useState(true); // Fireworks on page load
+  const recognitionRef = useRef(null);
+  const audioPlayedRef = useRef(false); // Prevent double play
 
   useEffect(() => {
     let voiceAudio;
@@ -17,13 +19,20 @@ const GreetingCardPage = () => {
       .then((res) => res.json())
       .then((data) => {
         setPerson(data);
-        if (data.voice) {
+
+        // 🎵 Load and Auto-Play Background Voice Once
+        if (data.voice && !audioPlayedRef.current) {
           voiceAudio = new Audio(data.voice);
           voiceAudio.loop = false;
           setAudio(voiceAudio);
+          voiceAudio.play().catch((err) => console.warn("Audio play blocked:", err));
+          audioPlayedRef.current = true;
         }
       })
       .catch(() => alert("Failed to load greeting card"));
+
+    // 🚀 Fireworks on Page Load (Stop after 5 seconds)
+    setTimeout(() => setShowFireworks(false), 5000);
 
     return () => {
       if (voiceAudio) {
@@ -33,10 +42,38 @@ const GreetingCardPage = () => {
     };
   }, [personId]);
 
+  // 🗣️ Speech Recognition to Open Card
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.warn("Speech recognition not supported in this browser.");
+      return;
+    }
+
+    recognitionRef.current = new SpeechRecognition();
+    recognitionRef.current.lang = "en-US";
+    recognitionRef.current.continuous = true;
+    recognitionRef.current.interimResults = false;
+
+    recognitionRef.current.onresult = (event) => {
+      const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+      console.log("Heard:", transcript);
+
+      if (transcript.includes("open card")) {
+        handleCardOpen();
+      }
+    };
+
+    recognitionRef.current.start();
+
+    return () => recognitionRef.current.stop();
+  }, []);
+
   const handleCardOpen = () => {
     setOpen(true);
-    if (audio) {
-      audio.play().catch((err) => console.log("Audio play blocked:", err));
+    if (audio && !audioPlayedRef.current) {
+      audio.play().catch((err) => console.warn("Audio play error:", err));
+      audioPlayedRef.current = true;
     }
     setShowFireworks(true);
     setTimeout(() => setShowFireworks(false), 4000);
@@ -47,11 +84,13 @@ const GreetingCardPage = () => {
   return (
     <div className={`greeting-card-page ${open ? "open" : ""}`}>
       {showFireworks && <Fireworks />}
-      <p className="tap-text">open the card</p>
+      {/* 🛑 Hide the text after card opens */}
+      {!open && <div className="tap-text cardheading">Say "open card" or click to open!</div>}
+
       <div className="card__container" onClick={handleCardOpen}>
         <div className="card">
           <div className="card__panel card__panel--front">
-            <h1>A little something just for you.</h1>
+            <h1 class="cardheading">A little something just for you.</h1>
           </div>
           <div className="card__panel card__panel--inside-left"></div>
           <div className="card__panel card__panel--inside-right">

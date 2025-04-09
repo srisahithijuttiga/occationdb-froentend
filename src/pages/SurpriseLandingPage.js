@@ -138,7 +138,11 @@ const SurpriseLandingPage = () => {
       <div className="surprise-content">
         <h1>{person.greeting}</h1>
         <h2>{person.name} 💖</h2>
-        <button onClick={() => navigate(`/cake/${person.id}`)}>Let's Go 🎉</button>
+        <button 
+        onClick={() => navigate(`/cake/${person.id}`)}>Let's Go 🎉
+        
+        </button>
+        
       </div>
     </div>
   );

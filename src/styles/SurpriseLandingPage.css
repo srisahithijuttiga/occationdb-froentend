@@ -2,7 +2,6 @@
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at center, #ffe5ec, #ffc2d1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,10 +9,39 @@
   font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
+/* Theme-Specific Backgrounds */
+.surprise-landing.Birthday {
+  background: radial-gradient(circle at center, #ffe5ec, #ffc2d1);
+}
+
+.surprise-landing.Anniversary {
+  background: radial-gradient(circle at center, #ffdfdb, #fff1e1);
+}
+
+.surprise-landing.CheerUp {
+  background: linear-gradient(45deg, #ff9c9c, #ffde89);
+}
+
+.surprise-landing.JobCongrats {
+  background: linear-gradient(45deg, #fffc00, #f9c113);
+}
+
+.surprise-landing.LoveNote {
+  background: radial-gradient(circle at center, #fff0f5, #ffd1dc);
+}
+
+.surprise-landing.SorryNote {
+  background: linear-gradient(45deg, #ff7a5c, #ffad99);
+}
+
+.surprise-landing.Grad {
+  background: linear-gradient(45deg, #ffccff, #e6b3ff);
+}
+
 .celebration-background {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center,#cd6982, #ffd6e0);
+  background: radial-gradient(circle at center, #cd6982, #ffd6e0);
   animation: bgPulse 10s ease-in-out infinite;
   z-index: 0;
 }
@@ -79,13 +107,7 @@
   }
 }
 
-.hearts-container {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
+/* Floating Hearts Animation */
 .floating-heart {
   position: absolute;
   bottom: -40px;
@@ -109,10 +131,7 @@
   }
 }
 
-
-
-
-/* Confetti ribbon canvas */
+/* Confetti Ribbons for Anniversaries, CheerUp */
 #ribbon-canvas {
   position: fixed;
   top: 0;

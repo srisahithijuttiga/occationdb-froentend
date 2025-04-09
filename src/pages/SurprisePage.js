@@ -30,6 +30,8 @@ const SurprisePage = () => {
             ▶️ {vid.name || `Video ${index + 1}`}
           </button>
         ))}
+              <p className="">Hope you had a great day 💖😊</p>
+
       </div>
 
       {selectedVideo && (
@@ -43,7 +45,6 @@ const SurprisePage = () => {
         </div>
       )}
 
-      <p className="final-message">Hope you had a great day 💖😊</p>
       <button onClick={() => navigate(`/final/${personId}`)}>✨ one last click</button>
 
       

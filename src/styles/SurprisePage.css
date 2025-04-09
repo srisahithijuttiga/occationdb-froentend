@@ -78,6 +78,7 @@
   }
   
   .final-message {
+    text-align: center;
     margin-top: 40px;
     font-size: 1.4rem;
     color: #d6336c;

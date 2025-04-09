@@ -1,5 +1,6 @@
-import React, { useEffect ,useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import FinalWrapPage from "./FinalWrapPage";
 import "../styles/SurpriseEndPage.css";
 
 const SurpriseEndPage = () => {
@@ -7,8 +8,8 @@ const SurpriseEndPage = () => {
   const navigate = useNavigate();
   const heartContainerRef = useRef(null);
 
-   // ❤️ Floating hearts
-   useEffect(() => {
+  // ❤️ Floating hearts
+  useEffect(() => {
     const container = heartContainerRef.current;
     if (!container) return;
 
@@ -48,13 +49,12 @@ const SurpriseEndPage = () => {
         <p className="closing">Wishing you endless smiles, love, and joy 💖</p>
         <button onClick={() => navigate(`/gallery/${personId}`)}>🔁 Watch Again</button>
       </div>
+            {/* Add Review Section */}
+      <FinalWrapPage username={personId} />
+    
+    
     </div>
   );
 };
-// background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-// color: #ffffff;
-// background: radial-gradient(circle at center, #1f1c2c, #928DAB);
-// color: #ffffff;
-
 
 export default SurpriseEndPage;

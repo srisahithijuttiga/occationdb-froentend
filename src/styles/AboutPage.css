@@ -1,0 +1,43 @@
+.about-page {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #ffe0ec, #ffc2d1);
+    font-family: "Comic Sans MS", cursive;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    color: #ff4b91;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(255, 105, 180, 0.5);
+  }
+  
+  p {
+    font-size: 1.3rem;
+    color: #333;
+    max-width: 700px;
+    margin-bottom: 20px;
+    line-height: 1.8;
+  }
+  
+  button {
+    background-color: #ff4b91;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #ff1e75;
+  }
+  
