@@ -81,21 +81,25 @@ const GreetingCardPage = () => {
 
   if (!person) return <p className="greeting-card-page">Loading...</p>;
 
-  return (
+  return  (
     <div className={`greeting-card-page ${open ? "open" : ""}`}>
       {showFireworks && <Fireworks />}
-      {/* 🛑 Hide the text after card opens */}
       {!open && <div className="tap-text cardheading">Say "open card" or click to open!</div>}
+
+      {open && (
+        <div className="cardgreeting-banner">
+          <p className="cardgreeting">{person.greeting}</p>
+        </div>
+      )}
 
       <div className="card__container" onClick={handleCardOpen}>
         <div className="card">
           <div className="card__panel card__panel--front">
-            <h1 class="cardheading">A little something just for you.</h1>
+            <h1 className="cardheading">A little something just for you.</h1>
           </div>
           <div className="card__panel card__panel--inside-left"></div>
           <div className="card__panel card__panel--inside-right">
-            <p>{person.greeting}</p>
-            <p>{person.customMessage}</p>
+            <p className="cardgreeting">{person.customMessage}</p>
             <button
               className="btn-gallery"
               onClick={(e) => {

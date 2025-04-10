@@ -4,7 +4,7 @@
   position: relative;
   overflow-x: hidden;
   background: url("../../public/assets/bg-hearts.png") repeat;
-  background-size: 700px; /* Smaller hearts */
+  background-size: 700px;
   padding-bottom: 100px;
 }
 
@@ -19,9 +19,8 @@
   z-index: 1;
 }
 
-/* 🎀 Faded white box inside hero */
 .hero-content {
-  background: rgba(255, 255, 255, 0.75); /* Soft white faded box */
+  background: rgba(255, 255, 255, 0.75);
   padding: 40px 30px;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(233, 30, 99, 0.1);
@@ -29,7 +28,6 @@
   width: 100%;
   backdrop-filter: blur(6px);
 }
-
 
 .hero-title {
   font-size: 3.4rem;
@@ -69,7 +67,6 @@
   background: #c2185b;
   transform: scale(1.05);
 }
-
 
 /* 🎁 Choose Your Occasion */
 .occasion-section {
@@ -132,27 +129,16 @@
   color: #c2185b;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .hero-title {
-    font-size: 2.2rem;
-  }
-
-  .poster-card {
-    width: 90%;
-    height: 220px;
-  }
-}
+/* 🧾 Review Section */
 .review-title {
-  background:rgba(255, 255, 255, 0.85);
-  height: 30px;
+  background: rgba(255, 255, 255, 0.85);
   text-align: center;
   font-size: 1.8rem;
   color: #c2185b;
   margin-top: 60px;
+  padding: 12px 0;
 }
 
-/* Container for scrollable area */
 .review-carousel-container {
   background: rgba(255, 255, 255, 0.85);
   padding: 60px 20px;
@@ -162,18 +148,15 @@
   align-items: center;
 }
 
-/* Wrapper */
 .review-carousel {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  min-height: 140px;
+  max-width: 900px;
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  min-height: 140px;
 }
 
-/* Each item animation */
 .review-carousel__item {
   display: flex;
   align-items: center;
@@ -191,10 +174,6 @@
 .review-carousel__item:nth-child(3) { animation-delay: 6s; }
 .review-carousel__item:nth-child(4) { animation-delay: 9s; }
 .review-carousel__item:nth-child(5) { animation-delay: 12s; }
-.review-carousel__item:nth-child(6) { animation-delay: 15s; }
-.review-carousel__item:nth-child(7) { animation-delay: 18s; }
-.review-carousel__item:nth-child(8) { animation-delay: 21s; }
-.review-carousel__item:nth-child(9) { animation-delay: 24s; }
 
 .review-carousel__item-head {
   border-radius: 50%;
@@ -218,6 +197,12 @@
   padding: 16px 20px 16px 70px;
   color: #880e4f;
   box-shadow: 0 6px 10px rgba(0,0,0,0.05);
+  max-height: 110px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.review-carousel__item-body::-webkit-scrollbar {
+  display: none;
 }
 
 .review-carousel__item-body .title {
@@ -254,17 +239,14 @@
     opacity: 0;
     visibility: hidden;
   }
-  41% {
-    transform: translateY(100%) scale(0.5);
-    opacity: 0;
-    visibility: hidden;
-  }
   100% {
-    transform: translateY(100%) scale(0.5);
+    transform: translateY(-100%) scale(0.5);
     opacity: 0;
     visibility: hidden;
   }
 }
+
+/* 📣 Why This Page */
 .why-this-page {
   background: linear-gradient(to right, #fff0f5, #ffe0f0);
   padding: 60px 20px;
@@ -303,4 +285,85 @@
 .about-button:hover {
   background: #c2185b;
   transform: scale(1.05);
+}
+
+/* 📬 Contact Info */
+.contact-popup {
+  max-width: 400px;
+  margin: 30px auto;
+  background: #fff0f5;
+  padding: 20px 30px;
+  border: 2px solid #ff99c8;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #880e4f;
+  animation: popFadeIn 0.4s ease-in-out;
+}
+
+.contact-popup h3 {
+  color: #c2185b;
+  margin-bottom: 10px;
+}
+
+.contact-popup ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.contact-popup ul li {
+  margin: 6px 0;
+}
+
+.contact-popup button {
+  margin-top: 16px;
+  padding: 8px 18px;
+  border: none;
+  background: #e91e63;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@keyframes popFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .poster-card {
+    width: 90%;
+    height: 220px;
+  }
+
+  .review-carousel-container {
+    height: 400px;
+    padding: 50px 20px;
+  }
+
+  .review-carousel {
+    width: 100%;
+  }
+
+  .review-carousel__item-body {
+    padding: 12px 16px 12px 60px;
+    font-size: 0.95rem;
+    max-height: 100px;
+  }
+
+  .review-carousel__item-head {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .review-carousel__item-body .title {
+    font-size: 14px;
+  }
 }

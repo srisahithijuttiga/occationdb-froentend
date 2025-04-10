@@ -7,6 +7,7 @@ import "../styles/HomePage.css";
 const HomePage = () => {
   const [personId, setPersonId] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [showContact, setShowContact] = useState(false);
 
   const navigate = useNavigate();
 
@@ -52,9 +53,21 @@ const HomePage = () => {
         <div className="hero-content">
           <h1 className="hero-title">🎉 Celebrate Moments</h1>
           <p className="hero-sub">Make someone smile with a personalized surprise</p>
-          <button onClick={handleStart}>Start My Surprise</button>
+          <button onClick={() => setShowContact(true)}>Request a Surprise</button>
         </div>
       </div>
+      {showContact && (
+  <div className="contact-popup">
+    <h3>🎁 Want to Surprise Someone?</h3>
+    <p>Please contact us at:</p>
+    <ul>
+      <li>📧 Email: theoccation1998@gmail.com</li>
+      <li>📱 WhatsApp: +91-9876543210</li>
+      <li>💬 Instagram: @occasions.gallery</li>
+    </ul>
+    <button onClick={() => setShowContact(false)}>Close</button>
+  </div>
+)}
 
       {/* Choose Your Occasion */}
       <div className="occasion-section">

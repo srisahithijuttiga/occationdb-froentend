@@ -19,8 +19,8 @@ const AdminDashboard = () => {
   const copyLink = (id) => {
     const link = `${window.location.origin}/surprise/${id}`;
     navigator.clipboard.writeText(link)
-      .then(() => alert('Link copied to clipboard!'))
-      .catch((err) => alert('Failed to copy link'));
+      .then(() => alert("Link copied to clipboard!"))
+      .catch(() => alert("Failed to copy link"));
   };
 
   const manageGallery = (id) => {
@@ -34,7 +34,15 @@ const AdminDashboard = () => {
     }
 
     const newId = `${name.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
-    const newPerson = { id: newId, name, greeting: wish, theme, customMessage: "", reviews: [], showReviews: false };
+    const newPerson = {
+      id: newId,
+      name,
+      greeting: wish,
+      theme,
+      customMessage: "",
+      reviews: [],
+      showReviews: false,
+    };
 
     try {
       const res = await fetch("http://localhost:5000/api/persons", {
@@ -43,7 +51,7 @@ const AdminDashboard = () => {
         body: JSON.stringify(newPerson),
       });
       const added = await res.json();
-      setPersons([...persons, added]);
+      setPersons((prev) => [...prev, added]);
       setName("");
       setWish("");
       setTheme("Birthday");
@@ -54,10 +62,14 @@ const AdminDashboard = () => {
 
   const deletePerson = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/persons/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/persons/${id}`, {
         method: "DELETE",
       });
-      setPersons(persons.filter((p) => p.id !== id));
+      if (res.ok) {
+        setPersons(persons.filter((p) => p.id !== id));
+      } else {
+        alert("Delete failed on server.");
+      }
     } catch (err) {
       alert("Failed to delete person.");
     }
@@ -77,18 +89,14 @@ const AdminDashboard = () => {
   };
 
   const toggleReviewVisibility = (id) => {
-    const updatedPersons = persons.map((person) =>
-      person.id === id ? { ...person, showReviews: !person.showReviews } : person
+    const updated = persons.map((p) =>
+      p.id === id ? { ...p, showReviews: !p.showReviews } : p
     );
-    setPersons(updatedPersons);
+    setPersons(updated);
   };
 
   const speakReview = (text) => {
-    if (!text) {
-      alert("No text available to speak.");
-      return;
-    }
-
+    if (!text) return alert("No text to speak.");
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(text);
     synth.speak(utterance);
@@ -99,8 +107,7 @@ const AdminDashboard = () => {
       await fetch(`http://localhost:5000/api/reviews/${personId}/${reviewId}`, {
         method: "DELETE",
       });
-      fetchReviews(personId); // Re-fetch reviews after deletion
-      alert("Review deleted.");
+      fetchReviews(personId); // Refresh after delete
     } catch (err) {
       alert("Failed to delete review.");
     }
@@ -133,51 +140,54 @@ const AdminDashboard = () => {
           <option value="CheerUp">🌟 Cheer Up</option>
           <option value="JobCongrats">🎉 Job Congratulations</option>
           <option value="LoveNote">❤️ Love Note</option>
-          <option value="SorryNote">❤️ Sorry Note</option>
+          <option value="SorryNote">💔 Sorry Note</option>
           <option value="Grad">🎓 Graduation</option>
         </select>
-        <button className="btn primary" onClick={addPerson}>Add Person</button>
+        <button className="btn primary" onClick={addPerson}>
+          Add Person
+        </button>
       </div>
 
-      <div className="person-list">
-        <h3>👥 Created Wishes</h3>
-        {persons.length === 0 ? (
-          <p>No entries yet.</p>
-        ) : (
-          <div className="cards-container">
-            {persons.map((person) => (
-              <div key={person.id} className="person-card">
-                <h4>{person.name}</h4>
-                <p>{person.greeting}</p>
-                <button className="btn small" onClick={() => copyLink(person.id)}>🔗 Copy Link</button>
-                <button className="btn small" onClick={() => manageGallery(person.id)}>🖼 Manage Gallery</button>
-                <button className="btn small" onClick={() => fetchReviews(person.id)}>
-                  📖 {person.showReviews ? 'Hide Reviews' : 'Show Reviews'}
-                </button>
-                <button className="btn small danger" onClick={() => deletePerson(person.id)}>❌ Delete</button>
+      <div className="person-list-wrapper">
+        <div className="person-list">
+          <h3>👥 Created Wishes</h3>
+          {persons.length === 0 ? (
+            <p>No entries yet.</p>
+          ) : (
+            <div className="cards-container">
+              {persons.map((person) => (
+                <div key={person.id} className="person-card">
+                  <h4>{person.name}</h4>
+                  <p>{person.greeting}</p>
+                  <button className="btn small" onClick={() => copyLink(person.id)}>🔗 Copy Link</button>
+                  <button className="btn small" onClick={() => manageGallery(person.id)}>🖼 Manage Gallery</button>
+                  <button className="btn small" onClick={() => fetchReviews(person.id)}>
+                    📖 {person.showReviews ? "Hide Reviews" : "Show Reviews"}
+                  </button>
+                  <button className="btn small danger" onClick={() => deletePerson(person.id)}>❌ Delete</button>
 
-                {/* Reviews Section */}
-                {person.showReviews && (
-                  <div className="reviews">
-                    {person.reviews.length > 0 ? (
-                      person.reviews.map((review, index) => (
-                        <div key={review.id} className="review-card">
-                          <h5>Review {index + 1}:</h5> {/* Display review index */}
-                          <p>{review.message}</p> {/* Ensure review text is being shown */}
-                          <button className="btn small" onClick={() => speakReview(review.message)}>🔊 Listen</button>
-                          <button className="btn small danger" onClick={() => deleteReview(person.id, review.id)}>❌ Delete</button>
-                          <button className="btn small" onClick={() => toggleReviewVisibility(person.id)}>❌ Close</button> {/* Hide reviews */}
-                        </div>
-                      ))
-                    ) : (
-                      <p>No reviews available.</p>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+                  {person.showReviews && (
+                    <div className="reviews">
+                      {person.reviews.length > 0 ? (
+                        person.reviews.map((review, index) => (
+                          <div key={review.id || index} className="review-card">
+                            <h5>Review {index + 1}</h5>
+                            <p>{review.message}</p>
+                            <button className="btn small" onClick={() => speakReview(review.message)}>🔊 Listen</button>
+                            <button className="btn small danger" onClick={() => deleteReview(person.id, review.id)}>❌ Delete</button>
+                            <button className="btn small" onClick={() => toggleReviewVisibility(person.id)}>❌ Close</button>
+                          </div>
+                        ))
+                      ) : (
+                        <p>No reviews available.</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

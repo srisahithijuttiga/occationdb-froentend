@@ -1,13 +1,20 @@
-/* Background and layout */
-body, .greeting-card-page {
-  text-align: center;
-  background-color: #000;
-  height: 100vh;
+body {
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
   font-family: 'Segoe UI', sans-serif;
-  position: relative;
+  background-color: #000;
+}
+
+.greeting-card-page {
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 /* Firecracker Canvas */
@@ -23,29 +30,47 @@ body, .greeting-card-page {
 
 .tap-text {
   position: absolute;
-  top: 20px;
+  top: 100px;
   width: 100%;
-  color: #ffe0ec;
+  text-align: center;
   font-size: 18px;
+  color: #ffe0ec;
   z-index: 10;
 }
 
+.cardgreeting-banner {
+  margin-top: 20px;
+}
+
+.cardgreeting {
+  font-size: 28px;
+  font-weight: 300;
+  font-style: italic;
+  text-align: center;
+  color: #ffe0ec;
+  text-shadow: 0 1px 2px #000;
+}
+
+.custom-message-banner {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 90%;
+  color: #fff;
+  z-index: 5;
+}
+
 .card__container {
+  margin-top: 100px;
   cursor: pointer;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   perspective: 1400px;
-  transition: all 0.2s ease;
-  z-index: 10;
 }
 
 .card {
   width: 280px;
-  height: 360px;
+  min-height: 360px;
   transform-style: preserve-3d;
-  transform: rotateY(0deg);
   transition: transform 1s ease;
   position: relative;
 }
@@ -58,16 +83,15 @@ body, .greeting-card-page {
   border: 1px solid #ffaad4;
   position: absolute;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  transition: transform 1s ease;
+  align-items: center;
   backface-visibility: hidden;
   border-radius: 12px;
-  box-sizing: border-box;
   padding: 16px;
+  box-sizing: border-box;
 }
 
 .card__panel--front {
@@ -93,6 +117,7 @@ body, .greeting-card-page {
 
 .card__panel--inside-right p {
   font-size: 16px;
+  color: black;
   margin-bottom: 16px;
   text-align: center;
 }
@@ -111,10 +136,25 @@ body, .greeting-card-page {
 .btn-gallery:hover {
   background: linear-gradient(45deg, #ff6b9a, #ff4081);
 }
-.cardheading{
+
+.cardheading {
   font-size: 2rem;
   margin-bottom: 20px;
   z-index: 2;
   color: #d6336c;
   text-shadow: 1px 1px 3px white;
+}
+
+@media (max-width: 480px) {
+  .cardgreeting {
+    font-size: 20px;
+  }
+
+  .custom-message-banner {
+    font-size: 14px;
+  }
+
+  .card {
+    width: 90%;
+  }
 }
