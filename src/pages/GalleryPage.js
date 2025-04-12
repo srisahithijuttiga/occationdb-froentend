@@ -9,9 +9,10 @@ const GalleryPage = () => {
   const carouselRef = useRef(null);
   const [angle, setAngle] = useState(0);
   const heartContainerRef = useRef(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/persons/${personId}`)
+    fetch(`${API_URL}/api/persons/${personId}`)
       .then(res => res.json())
       .then(data => {
         setImages(data.gallery || []);

@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import "../styles/AdminDashboard.css";
 
 const AdminDashboard = () => {
+  
   const navigate = useNavigate();
   const [persons, setPersons] = useState([]);
   const [name, setName] = useState("");
   const [wish, setWish] = useState("");
   const [theme, setTheme] = useState("Birthday");
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/persons")
+    fetch(`${API_URL}/api/persons`)
       .then((res) => res.json())
       .then((data) => setPersons(data))
       .catch(() => alert("Failed to fetch persons"));
@@ -45,7 +47,7 @@ const AdminDashboard = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/persons", {
+      const res = await fetch(`${API_URL}/api/persons`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newPerson),
@@ -62,7 +64,7 @@ const AdminDashboard = () => {
 
   const deletePerson = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/persons/${id}`, {
+      const res = await fetch(`${API_URL}/api/persons/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -77,7 +79,7 @@ const AdminDashboard = () => {
 
   const fetchReviews = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews/${id}`);
+      const res = await fetch(`${API_URL}/api/reviews/${id}`);
       const data = await res.json();
       const updatedPersons = persons.map((p) =>
         p.id === id ? { ...p, reviews: data, showReviews: true } : p
@@ -104,7 +106,7 @@ const AdminDashboard = () => {
 
   const deleteReview = async (personId, reviewId) => {
     try {
-      await fetch(`http://localhost:5000/api/reviews/${personId}/${reviewId}`, {
+      await fetch(`${API_URL}/api/reviews/${personId}/${reviewId}`, {
         method: "DELETE",
       });
       fetchReviews(personId); // Refresh after delete

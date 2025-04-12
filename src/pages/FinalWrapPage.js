@@ -19,66 +19,76 @@ const FinalWrapPage = ({ username }) => {
     }
   }, [username]);
 
-  const fetchReviews = async () => {
-    try {
-      const response = await axios.get(`/api/reviews/${username}`);
-      setReviews(response.data);
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        console.warn('No reviews found for this user.');
-        setReviews([]);
-      } else {
-        console.error('Error fetching reviews:', error.response?.data?.error || error.message);
-      }
+// 🔹 Fetch reviews for the current user
+const fetchReviews = async () => {
+  try {
+    const response = await axios.get(`/api/reviews/${username}`);
+    setReviews(response.data);
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      console.warn('No reviews found for this user.');
+      setReviews([]);
+    } else {
+      console.error('Error fetching reviews:', error.response?.data?.error || error.message);
     }
-  };
+  }
+};
 
-  const submitReview = async () => {
-    if (!message.trim()) {
-      setStatus('Please enter a message.');
-      return;
-    }
+// 🔹 Submit a new review
+const submitReview = async () => {
+  if (!message.trim()) {
+    setStatus('Please enter a message.');
+    return;
+  }
 
-    try {
-      await axios.post('/api/reviews', { username, message });
-      setStatus('Review submitted successfully!');
-      setMessage('');
-      fetchReviews();
-    } catch (error) {
-      setStatus('Error submitting review.');
-    }
-  };
+  try {
+    await axios.post('/api/reviews', {
+      username,  // ensure username is sent
+      message
+    });
+    setStatus('Review submitted successfully!');
+    setMessage('');
+    fetchReviews(); // Refresh after submit
+  } catch (error) {
+    setStatus('Error submitting review.');
+  }
+};
 
-  const deleteReview = async (index) => {
-    try {
-      await axios.delete(`/api/reviews/${index}`);
-      setStatus('Review deleted successfully.');
-      fetchReviews();
-    } catch (error) {
-      console.error('Delete error:', error);
-      setStatus(error.response?.data?.error || 'Error deleting review.');
-    }
-  };
+// 🔹 Delete a review by ID
+const deleteReview = async (reviewId) => {
+  try {
+    await axios.delete(`/api/reviews/${reviewId}`);
+    setStatus('Review deleted successfully.');
+    fetchReviews();
+  } catch (error) {
+    console.error('Delete error:', error);
+    setStatus(error.response?.data?.error || 'Error deleting review.');
+  }
+};
 
-  const editReview = async (index) => {
-    if (!editedMessage.trim()) {
-      setStatus('Please enter a message.');
-      return;
-    }
+// 🔹 Edit a review by ID
+const editReview = async (reviewId) => {
+  if (!editedMessage.trim()) {
+    setStatus('Please enter a message.');
+    return;
+  }
 
-    try {
-      await axios.put(`/api/reviews/${index}`, {
-        username,
-        message: editedMessage,
-      });
-      setStatus('Review updated successfully.');
-      setEditMode(null);
-      setEditedMessage('');
-      fetchReviews();
-    } catch (error) {
-      setStatus(error.response?.data?.error || 'Error updating review.');
-    }
-  };
+  try {
+    await axios.put(`/api/reviews/${reviewId}`, {
+      username,
+      message: editedMessage,
+    });
+    setStatus('Review updated successfully.');
+    setEditMode(null);
+    setEditedMessage('');
+    fetchReviews();
+  } catch (error) {
+    console.error('Error updating review:', error);
+    setStatus(error.response?.data?.error || 'Error updating review.');
+  }
+};
+
+
 
   const startSpeechToText = () => {
     if (!recognition) return;
@@ -138,27 +148,32 @@ const FinalWrapPage = ({ username }) => {
         <p>No reviews available.</p>
       ) : (
         <ul>
-          {reviews.map((review, index) => (
-            <li key={index}>
-              {editMode === index ? (
-                <div>
-                  <textarea
-                    value={editedMessage}
-                    onChange={(e) => setEditedMessage(e.target.value)}
-                  />
-                  <button onClick={() => editReview(index)}>Save</button>
-                  <button onClick={() => setEditMode(null)}>Cancel</button>
-                </div>
-              ) : (
-                <div>
-                  <p>{review.message}</p>
-                  <button onClick={() => { setEditMode(index); setEditedMessage(review.message); }}>Edit</button>
-                  <button onClick={() => deleteReview(index)}>Delete</button>
-                  <button onClick={() => handleTextToSpeech(review.message)}>🔊 Listen</button>
-                </div>
-              )}
-            </li>
-          ))}
+        {reviews.map((review) => (
+  <li key={review.id}>
+    {editMode === review.id ? (
+      <div>
+        <textarea
+          value={editedMessage}
+          onChange={(e) => setEditedMessage(e.target.value)}
+        />
+        <button onClick={() => editReview(review.id)}>Save</button>
+        <button onClick={() => setEditMode(null)}>Cancel</button>
+      </div>
+    ) : (
+      <div>
+        <p>{review.message}</p>
+        <button onClick={() => {
+          setEditMode(review.id);
+          setEditedMessage(review.message);
+        }}>Edit</button>
+        <button onClick={() => deleteReview(review.id)}>Delete</button>
+        <button onClick={() => handleTextToSpeech(review.message)}>🔊 Listen</button>
+      </div>
+    )}
+  </li>
+))}
+
+
         </ul>
       )}
     </div>

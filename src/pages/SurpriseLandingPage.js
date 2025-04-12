@@ -9,9 +9,10 @@ const SurpriseLandingPage = () => {
   const heartContainerRef = useRef(null); // ✅ FIX: moved outside useEffect
 
   const actualId = personId?.replace("-surprise", "");
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/persons")
+    fetch(`${API_URL}/api/persons`)
       .then((res) => res.json())
       .then((data) => {
         const found = data.find((p) => p.id === actualId);

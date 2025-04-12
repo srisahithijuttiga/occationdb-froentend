@@ -11,11 +11,12 @@ const GalleryManager = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedVoice, setSelectedVoice] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   // Fetch person data from backend
   const fetchPerson = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/persons/${personId}`);
+      const res = await axios.get(`${API_URL}/api/persons/${personId}`);
       console.log("Fetched person data:", res.data); // Debugging
       setPerson(res.data);
     } catch (error) {
@@ -32,7 +33,7 @@ const GalleryManager = () => {
     if (!selectedImage) return alert("Please select an image");
     const reader = new FileReader();
     reader.onloadend = async () => {
-      await axios.post(`http://localhost:5000/api/persons/${personId}/gallery`, {
+      await axios.post(`${API_URL}/api/persons/${personId}/gallery`, {
         imageUrl: reader.result, // Upload base64 string
         text: imageText,
       });
@@ -47,7 +48,7 @@ const GalleryManager = () => {
     if (!selectedVideo) return alert("Please select a video");
     const reader = new FileReader();
     reader.onloadend = async () => {
-      await axios.post(`http://localhost:5000/api/persons/${personId}/videos`, {
+      await axios.post(`${API_URL}/api/persons/${personId}/videos`, {
         videoUrl: reader.result, // Upload base64 video data
         name: videoName,
       });
@@ -62,7 +63,7 @@ const GalleryManager = () => {
     if (!selectedVoice) return alert("Please select a voice file");
     const reader = new FileReader();
     reader.onloadend = async () => {
-      await axios.post(`http://localhost:5000/api/persons/${personId}/voice`, {
+      await axios.post(`${API_URL}/api/persons/${personId}/voice`, {
         voice: reader.result, // Upload base64 voice data
       });
       setSelectedVoice(null);
@@ -72,17 +73,17 @@ const GalleryManager = () => {
   };
 
   const deleteImage = async (index) => {
-    await axios.delete(`http://localhost:5000/api/persons/${personId}/gallery/${index}`);
+    await axios.delete(`${API_URL}/api/persons/${personId}/gallery/${index}`);
     fetchPerson(); // Re-fetch to display updated media
   };
 
   const deleteVideo = async (index) => {
-    await axios.delete(`http://localhost:5000/api/persons/${personId}/videos/${index}`);
+    await axios.delete(`${API_URL}/api/persons/${personId}/videos/${index}`);
     fetchPerson(); // Re-fetch to display updated media
   };
 
   const deleteVoice = async () => {
-    await axios.delete(`http://localhost:5000/api/persons/${personId}/voice`);
+    await axios.delete(`${API_URL}/api/persons/${personId}/voice`);
     fetchPerson(); // Re-fetch to display updated media
   };
 
@@ -109,7 +110,7 @@ const GalleryManager = () => {
           <button
             className="btn primary"
             onClick={async () => {
-              await axios.post(`http://localhost:5000/api/persons/${personId}/custom-message`, {
+              await axios.post(`${API_URL}/api/persons/${personId}/custom-message`, {
                 message: person.customMessage,
               });
               alert("Custom message saved!");
@@ -123,7 +124,7 @@ const GalleryManager = () => {
             onClick={async () => {
               const confirm = window.confirm("Delete the custom message?");
               if (!confirm) return;
-              await axios.delete(`http://localhost:5000/api/persons/${personId}/custom-message`);
+              await axios.delete(`${API_URL}/api/persons/${personId}/custom-message`);
               alert("Custom message deleted!");
               fetchPerson();
             }}

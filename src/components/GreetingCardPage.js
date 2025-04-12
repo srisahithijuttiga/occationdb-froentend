@@ -12,10 +12,11 @@ const GreetingCardPage = () => {
   const [showFireworks, setShowFireworks] = useState(true); // Fireworks on page load
   const recognitionRef = useRef(null);
   const audioPlayedRef = useRef(false); // Prevent double play
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     let voiceAudio;
-    fetch(`http://localhost:5000/api/persons/${personId}`)
+    fetch(`${API_URL}/api/persons/${personId}`)
       .then((res) => res.json())
       .then((data) => {
         setPerson(data);
