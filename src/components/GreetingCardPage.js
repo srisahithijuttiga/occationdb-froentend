@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Fireworks from "./Fireworks";
+import GradBackground from "./GradBackground";
+import JobBackground from "./JobBackground";
+import AnniversaryBackground from "./AnniversaryBackground";
+import CheerUpBackground from "./CheerUpBackground";
+import LoveFireworks from "./LoveFireworks";
+
 import "../styles/GreetingCardPage.css";
 
 const GreetingCardPage = () => {
@@ -9,6 +15,7 @@ const GreetingCardPage = () => {
   const [person, setPerson] = useState(null);
   const [open, setOpen] = useState(false);
   const [audio, setAudio] = useState(null);
+  const [theme, setTheme] = useState("Birthday");
   const [showFireworks, setShowFireworks] = useState(true); // Fireworks on page load
   const recognitionRef = useRef(null);
   const audioPlayedRef = useRef(false); // Prevent double play
@@ -20,6 +27,8 @@ const GreetingCardPage = () => {
       .then((res) => res.json())
       .then((data) => {
         setPerson(data);
+        setTheme(data.theme); // 👈 Set theme here
+
 
         // 🎵 Load and Auto-Play Background Voice Once
         if (data.voice && !audioPlayedRef.current) {
@@ -77,15 +86,34 @@ const GreetingCardPage = () => {
       audioPlayedRef.current = true;
     }
     setShowFireworks(true);
-    setTimeout(() => setShowFireworks(false), 4000);
+    setTimeout(() => setShowFireworks(false), 5000);
   };
 
   if (!person) return <p className="greeting-card-page">Loading...</p>;
 
   return  (
-    <div className={`greeting-card-page ${open ? "open" : ""}`}>
-      {showFireworks && <Fireworks />}
-      {!open && <div className="tap-text cardheading">Say "open card" or click to open!</div>}
+    <div className={`greeting-card-page ${open ? "open" : ""} 
+    ${theme === "Grad" ? "grad" : ""}
+    ${theme === "JobCongrats" ? "JobCongrats" : ""}}
+    ${theme === "Anniversary" ? "no-black-bg" : ""}`}  // 💖 No black background
+
+    >
+
+      {theme === "Grad" && <GradBackground />}
+      {theme === "JobCongrats" && <JobBackground/>}
+      {theme === "Anniversary" && <AnniversaryBackground />}
+      {theme === "CheerUp" && <CheerUpBackground />}
+
+{showFireworks && (
+  <>
+    {theme === "Birthday" && <Fireworks />}
+    {(theme === "LoveNote" || theme === "SorryNote") && <Fireworks />}
+
+
+  </>
+)}
+
+          {!open && <div className="tap-text cardheading">Say "open card" or click to open!</div>}
 
       {open && (
         <div className="cardgreeting-banner">

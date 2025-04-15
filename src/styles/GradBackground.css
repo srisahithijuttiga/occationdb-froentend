@@ -1,0 +1,70 @@
+.confettis-top-left,
+.confettis-bottom-right {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  perspective: 600px;
+  transform-style: preserve-3d;
+  z-index: 0;
+}
+
+.confettis-top-left {
+  top: 0;
+  left: 0;
+  transform: rotate(-40deg);
+}
+
+.confettis-bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: rotate(120deg); /* Optional: keep this if you want it to fire up from bottom */
+}
+
+.confetti {
+  position: absolute;
+  transform: rotate(var(--rotation));
+}
+
+.confetti span {
+  position: absolute;
+  width: 0.4rem;
+  height: 0.7rem;
+  will-change: transform;
+  background-color: var(--color);
+  animation: fliegen calc(5s * var(--rnd)) infinite cubic-bezier(0.2, 1, 0.2, 1);
+  animation-delay: -10s;
+}
+
+@keyframes fliegen {
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    /* 👇 FALLING DOWN direction from top */
+    transform: translateY(calc(30vh + 50vh * var(--rnd)))
+      rotateY(calc(3000deg * var(--rnd)))
+      rotateX(calc(2000deg * var(--rnd)))
+      rotateZ(calc(1060deg * var(--rnd)));
+  }
+}
+.ribbon {
+  position: fixed;
+  top: -40px;
+  width: 30px;
+  height: 60px;
+  background: linear-gradient(45deg, #ffcc00, #ff6699);
+  border-radius: 8px;
+  opacity: 0.8;
+  animation: ribbonFall linear;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes ribbonFall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}

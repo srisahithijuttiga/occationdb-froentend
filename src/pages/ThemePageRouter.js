@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import CakePage from "../components/CakePage";
 import GreetingCardPage from "../components/GreetingCardPage";
-import AnniversaryGreetingCard from "../components/AnniversaryGreetingCard";
-import GraduationCard from "../components/GraduationCard";
-import JobCongratsCard from "../components/JobCongratsCard";
-import CheerUpCard from "../components/CheerUpCard";
+import AnniversaryBackground from "../components/AnniversaryBackground";
+import GradBackground from "../components/GradBackground";
+import JobBackground from "../components/JobBackground";
+import CheerUpBackground from "../components/CheerUpBackground";
 import LoveNoteCard from "../components/LoveNoteCard";
 import SorryNote from "../components/SorryNote";
 
@@ -29,13 +29,13 @@ const ThemePageRouter = () => {
     case "Birthday":
       return <CakePage person={person} />;
     case "Anniversary":
-      return <AnniversaryGreetingCard person={person} />;
+      return <AnniversaryBackground person={person} />;
     case "Grad":
-      return <GraduationCard person={person} />;
+      return <GradBackground person={person} />;
     case "JobCongrats":
-      return <JobCongratsCard person={person} />;
+      return <JobBackground person={person} />;
     case "CheerUp":
-      return <CheerUpCard person={person} />;
+      return <CheerUpBackground person={person} />;
     case "LoveNote":
       return <LoveNoteCard person={person} />;
     case "SorryNote":

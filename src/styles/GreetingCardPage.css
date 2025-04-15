@@ -5,6 +5,10 @@ body {
   background-color: #000;
 }
 
+.greeting-card-page.grad {
+  background-color: black;
+}
+
 .greeting-card-page {
   min-height: 100vh;
   background-color: #000;
@@ -15,6 +19,10 @@ body {
   padding: 40px 20px;
   box-sizing: border-box;
   overflow-y: auto;
+}
+
+.greeting-card-page.no-black-bg {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* Firecracker Canvas */
@@ -47,7 +55,7 @@ body {
   font-weight: 300;
   font-style: italic;
   text-align: center;
-  color: #ffe0ec;
+  color: white;
   text-shadow: 0 1px 2px #000;
 }
 
@@ -63,16 +71,20 @@ body {
 
 .card__container {
   margin-top: 100px;
-  cursor: pointer;
   perspective: 1400px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .card {
-  width: 280px;
+  width: 100%;
+  max-width: 300px;
   min-height: 360px;
   transform-style: preserve-3d;
   transition: transform 1s ease;
   position: relative;
+  cursor: pointer;
 }
 
 .greeting-card-page.open .card {
@@ -145,16 +157,38 @@ body {
   text-shadow: 1px 1px 3px white;
 }
 
+/* ✅ Mobile view fix */
 @media (max-width: 480px) {
+  .greeting-card-page {
+    padding: 20px 10px;
+  }
+
   .cardgreeting {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .custom-message-banner {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .card {
-    width: 90%;
+    width: 85%;
+    max-width: 260px;
+  }
+
+  .cardheading {
+    font-size: 1.3rem;
+  }
+
+  .btn-gallery {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .tap-text {
+    font-size: 15px;
+    top: 85px;
   }
 }
+
+

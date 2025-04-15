@@ -1,0 +1,53 @@
+
+.confettis-top-left,
+.confettis-bottom-right {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  perspective: 600px;
+  transform-style: preserve-3d;
+  z-index: 0;
+}
+
+.confettis-top-left {
+  top: 0;
+  left: 0;
+  transform: rotate(-40deg);
+}
+
+.confettis-bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: rotate(120deg); /* Optional: keep this if you want it to fire up from bottom */
+}
+
+.confetti {
+  position: absolute;
+  transform: rotate(var(--rotation));
+}
+
+.confetti span {
+  position: absolute;
+  width: 0.4rem;
+  height: 0.7rem;
+  will-change: transform;
+  background-color: var(--color);
+  animation: fliegen calc(5s * var(--rnd)) infinite cubic-bezier(0.2, 1, 0.2, 1);
+  animation-delay: -10s;
+}
+
+@keyframes fliegen {
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    /* 👇 FALLING DOWN direction from top */
+    transform: translateY(calc(30vh + 50vh * var(--rnd)))
+      rotateY(calc(3000deg * var(--rnd)))
+      rotateX(calc(2000deg * var(--rnd)))
+      rotateZ(calc(1060deg * var(--rnd)));
+  }
+}
+
