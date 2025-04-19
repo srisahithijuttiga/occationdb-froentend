@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  startReactionCapture,
+  stopReactionCapture,
+} from "../utils/reactionCapture";
 import "../styles/CakePage.css";
 
 const CakePage = () => {
@@ -11,11 +15,12 @@ const CakePage = () => {
   const audioRef = useRef(null);
   const hasStartedAudio = useRef(false);
   const recognitionRef = useRef(null);
+  const videoRef = useRef(null);
   const API_URL = process.env.REACT_APP_API_URL;
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  // 🔊 Fetch and Play Background Voice
+  // 🔊 Play Background Voice
   const fetchVoice = async () => {
     try {
       const res = await fetch(`${API_URL}/api/persons/${personId}`);
@@ -26,43 +31,25 @@ const CakePage = () => {
         audio.loop = true;
         audio.volume = 1;
         audioRef.current = audio;
-        playVoice();
-        hasStartedAudio.current = true; // Prevent multiple plays
+        audio.play().catch((err) => console.warn("Audio blocked:", err));
+        hasStartedAudio.current = true;
       }
     } catch (err) {
       console.warn("❌ Voice load failed:", err);
     }
   };
 
-  const playVoice = () => {
-    if (audioRef.current) {
-      audioRef.current.play().catch((err) => console.warn("Audio play blocked:", err));
-    }
-  };
-
-  // ✅ Blow Candles Using Voice
+  // 🎤 Voice Command: "Blow Candles"
   const initializeSpeechRecognition = () => {
-    if (!SpeechRecognition) {
-      console.warn("Speech recognition not supported.");
-      return;
-    }
-
-    if (recognitionRef.current) return;
+    if (!SpeechRecognition || recognitionRef.current) return;
 
     const recognition = new SpeechRecognition();
     recognitionRef.current = recognition;
     recognition.lang = "en-US";
-    recognition.interimResults = false;
     recognition.continuous = true;
-
-    recognition.onstart = () => {
-      console.log("🎙 Say 'Blow Candles' or blow into the mic to blow them out.");
-    };
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript.toLowerCase();
-      console.log("Recognized:", transcript);
-
       if (transcript.includes("blow candles")) {
         blowAllCandles();
       }
@@ -75,13 +62,8 @@ const CakePage = () => {
     recognition.start();
   };
 
-  // 🎤 Detect Blow Sound (Microphone Detection)
+  // 🎤 Detect Blow Sound
   const detectBlowSound = async () => {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      console.warn("Microphone access not supported.");
-      return;
-    }
-
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const audioContext = new AudioContext();
@@ -95,13 +77,7 @@ const CakePage = () => {
       function analyze() {
         analyser.getByteFrequencyData(dataArray);
         const volume = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
-
-        // Detect blowing sound
-        if (volume > 50) {
-          console.log("🎤 Blow detected!");
-          blowAllCandles();
-        }
-
+        if (volume > 50) blowAllCandles();
         requestAnimationFrame(analyze);
       }
 
@@ -111,25 +87,20 @@ const CakePage = () => {
     }
   };
 
-  // 🕯 Blow Out Individual Candle
+  // 🕯 Logic
   const blowCandle = (index) => {
     const newCandles = [...candles];
     newCandles[index] = false;
     setCandles(newCandles);
-
-    if (newCandles.every((c) => !c)) {
-      setShowButton(true);
-    }
+    if (newCandles.every((c) => !c)) setShowButton(true);
   };
 
-  // 🕯 Blow All Candles
   const blowAllCandles = () => {
-    console.log("🎉 Candles blown out!");
     setCandles([false, false, false, false, false]);
     setShowButton(true);
   };
 
-  // 🧨 Fireworks Effect on Page Load
+  // 🎆 Fireworks
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -152,14 +123,10 @@ const CakePage = () => {
         if (this.y > this.targetY) {
           this.y -= this.speed;
         } else if (!this.exploded) {
-          this.explode();
+          for (let i = 0; i < 50; i++) {
+            particles.push(new Particle(this.x, this.y));
+          }
           this.exploded = true;
-        }
-      }
-
-      explode() {
-        for (let i = 0; i < 50; i++) {
-          particles.push(new Particle(this.x, this.y));
         }
       }
 
@@ -205,16 +172,16 @@ const CakePage = () => {
         fireworks.push(new Firework(Math.random() * canvas.width, canvas.height, Math.random() * canvas.height / 2));
       }
 
-      fireworks.forEach((firework, index) => {
-        firework.update();
-        firework.draw(ctx);
-        if (firework.exploded) fireworks.splice(index, 1);
+      fireworks.forEach((f, i) => {
+        f.update();
+        f.draw(ctx);
+        if (f.exploded) fireworks.splice(i, 1);
       });
 
-      particles.forEach((particle, index) => {
-        particle.update();
-        particle.draw(ctx);
-        if (particle.alpha <= 0) particles.splice(index, 1);
+      particles.forEach((p, i) => {
+        p.update();
+        p.draw(ctx);
+        if (p.alpha <= 0) particles.splice(i, 1);
       });
 
       requestAnimationFrame(animate);
@@ -222,26 +189,39 @@ const CakePage = () => {
 
     animate();
   }, []);
-
+  useEffect(() => {
+    const hasPermission = sessionStorage.getItem("reactionConsent");
+    if (hasPermission) {
+      startReactionCapture(videoRef, "cake"); // or greeting/gallery
+    }
+  }, []);
+  
+  
+  // 🔄 Startup / Cleanup
   useEffect(() => {
     fetchVoice();
     initializeSpeechRecognition();
     detectBlowSound();
+    startReactionCapture(videoRef, "cake");
 
     return () => {
       if (audioRef.current) audioRef.current.pause();
       if (recognitionRef.current) recognitionRef.current.stop();
+      // stopReactionCapture();
     };
   }, [personId]);
 
   return (
     <div className="cake-page">
       <canvas ref={canvasRef} className="fireworks-canvas"></canvas>
+
       {!showButton && (
         <h1 className="cake-heading">
-          🎂 Blow out the candles! Say <em>"Blow Candles!"</em> or Blow into the Mic.
+          🎂 Blow out the candles! Say <em>"Blow Candles!"</em> or blow into the Mic.
         </h1>
       )}
+
+      <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />
 
       <div className="cake-container">
         <div className="candles">
@@ -253,6 +233,10 @@ const CakePage = () => {
         </div>
         <div className="cake-body"></div>
       </div>
+      {sessionStorage.getItem("reactionConsent") && (
+  <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />
+)}
+
 
       {showButton && (
         <button className="go-btn" onClick={() => navigate(`/gallery/${personId}`)}>

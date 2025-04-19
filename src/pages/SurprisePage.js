@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useParams , useNavigate} from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import "../styles/SurprisePage.css";
+import {
+  startReactionCapture,
+  stopReactionCapture,
+} from "../utils/reactionCapture";
 
 const SurprisePage = () => {
   const navigate = useNavigate();
@@ -9,16 +13,33 @@ const SurprisePage = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
 
+  const videoRef = useRef(null); // ✅ Properly declared
+  const [consentGiven, setConsentGiven] = useState(false);
+
+  // 📦 Load videos
   useEffect(() => {
     fetch(`${API_URL}/api/persons/${personId}`)
       .then((res) => res.json())
       .then((data) => {
         setVideos(data.videos || []);
       });
-  }, [personId]);
+  }, [personId, API_URL]);
 
+
+
+  useEffect(() => {
+    const hasPermission = sessionStorage.getItem("reactionConsent");
+    if (hasPermission) {
+      startReactionCapture(videoRef, "video"); // or greeting/gallery
+    }
+  }, []);
+  
+
+  
   return (
     <div className={`surprise-page ${selectedVideo ? "blurred" : ""}`}>
+      {consentGiven && <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />}
+
       <h2 className="title">🎊 Your Special Surprise Videos 🎥</h2>
 
       <div className="video-list">
@@ -31,8 +52,7 @@ const SurprisePage = () => {
             ▶️ {vid.name || `Video ${index + 1}`}
           </button>
         ))}
-              <p className="">Hope you had a great day 💖😊</p>
-
+        <p className="">Hope you had a great day 💖😊</p>
       </div>
 
       {selectedVideo && (
@@ -45,10 +65,21 @@ const SurprisePage = () => {
           </div>
         </div>
       )}
+      {sessionStorage.getItem("reactionConsent") && (
+  <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />
+)}
 
-      <button onClick={() => navigate(`/final/${personId}`)}>✨ one last click</button>
 
-      
+        <button
+          onClick={() => {
+            stopReactionCapture(); // ✅ Only here
+            sessionStorage.removeItem("reactionConsent");
+            navigate(`/final/${personId}`);
+          }}
+        >
+          ✨ One last click
+        </button>
+
     </div>
   );
 };

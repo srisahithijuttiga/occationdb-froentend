@@ -218,3 +218,39 @@ li {
     gap: 10px;
   }
 }
+.reaction-moments {
+  margin: 40px auto;
+  padding: 20px;
+  max-width: 800px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+}
+
+.reaction-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.reaction-item {
+  width: 100px;
+  text-align: center;
+}
+
+.reaction-item img {
+  width: 100px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.summary {
+  font-size: 12px;
+  margin-top: 6px;
+  color: #ffdede;
+}

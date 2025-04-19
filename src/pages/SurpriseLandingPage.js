@@ -1,16 +1,50 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  startReactionCapture,
+  resetCapturedFrames,
+} from "../utils/reactionCapture";
+
 import "../styles/SurpriseLandingPage.css";
 
 const SurpriseLandingPage = () => {
   const { personId } = useParams();
   const navigate = useNavigate();
   const [person, setPerson] = useState(null);
-  const heartContainerRef = useRef(null); // ✅ FIX: moved outside useEffect
+  const heartContainerRef = useRef(null);
+  const videoRef = useRef(null);
+  const [consentGiven, setConsentGiven] = useState(false);
 
   const actualId = personId?.replace("-surprise", "");
   const API_URL = process.env.REACT_APP_API_URL;
 
+  // 🔐 Ask permission ONCE on first load
+  useEffect(() => {
+    const askPermission = async () => {
+      const hasPermission = sessionStorage.getItem("reactionConsent");
+      if (!hasPermission) {
+        const allow = window.confirm("💡 Allow us to capture your reaction?");
+        if (allow) {
+          resetCapturedFrames(); // Clear old session
+          sessionStorage.setItem("reactionConsent", "true"); // ✅ Save consent
+          setConsentGiven(true);
+        }
+      } else {
+        setConsentGiven(true); // Already granted
+      }
+    };
+    askPermission();
+  }, []);
+  
+
+  // 📸 Start reaction capture only after consent
+  useEffect(() => {
+    if (consentGiven) {
+      startReactionCapture(videoRef, "landing");
+    }
+  }, [consentGiven]);
+
+  // 👤 Load person info
   useEffect(() => {
     fetch(`${API_URL}/api/persons`)
       .then((res) => res.json())
@@ -18,9 +52,9 @@ const SurpriseLandingPage = () => {
         const found = data.find((p) => p.id === actualId);
         setPerson(found);
       });
-  }, [actualId]);
+  }, [actualId, API_URL]);
 
-  // ✅ Floating Hearts
+  // ❤️ Floating hearts
   useEffect(() => {
     let heartCount = 0;
     const maxHearts = 15;
@@ -33,7 +67,6 @@ const SurpriseLandingPage = () => {
       heart.style.left = `${Math.random() * 100}vw`;
       heart.style.animationDuration = `${4 + Math.random() * 3}s`;
       heart.style.opacity = `${0.5 + Math.random() * 0.4}`;
-
       heartContainerRef.current.appendChild(heart);
       heartCount++;
 
@@ -47,7 +80,7 @@ const SurpriseLandingPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ Confetti ribbons
+  // 🎀 Confetti Background
   useEffect(() => {
     const canvas = document.createElement("canvas");
     canvas.id = "ribbon-canvas";
@@ -117,33 +150,31 @@ const SurpriseLandingPage = () => {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => {
       document.body.removeChild(canvas);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  if (!personId || !actualId) {
+  if (!personId || !actualId)
     return <div className="landing-loading">Invalid link. Missing person ID.</div>;
-  }
 
-  if (!person) {
+  if (!person)
     return <div className="landing-loading">Loading your surprise...</div>;
-  }
 
   return (
     <div className="surprise-landing">
       <div className="celebration-background"></div>
       <div ref={heartContainerRef} className="hearts-container"></div>
+
+      {consentGiven && (
+        <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />
+      )}
+
       <div className="surprise-content">
         <h1>{person.greeting}</h1>
         <h2>{person.name} 💖</h2>
-        <button 
-        onClick={() => navigate(`/cake/${person.id}`)}>Let's Go 🎉
-        
-        </button>
-        
+        <button onClick={() => navigate(`/cake/${person.id}`)}>Let's Go 🎉</button>
       </div>
     </div>
   );

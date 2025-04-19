@@ -7,6 +7,11 @@ import AnniversaryBackground from "./AnniversaryBackground";
 import CheerUpBackground from "./CheerUpBackground";
 import LoveFireworks from "./LoveFireworks";
 
+import {
+  startReactionCapture,
+  stopReactionCapture,
+} from "../utils/reactionCapture";
+
 import "../styles/GreetingCardPage.css";
 
 const GreetingCardPage = () => {
@@ -16,21 +21,23 @@ const GreetingCardPage = () => {
   const [open, setOpen] = useState(false);
   const [audio, setAudio] = useState(null);
   const [theme, setTheme] = useState("Birthday");
-  const [showFireworks, setShowFireworks] = useState(true); // Fireworks on page load
+  const [showFireworks, setShowFireworks] = useState(true);
   const recognitionRef = useRef(null);
-  const audioPlayedRef = useRef(false); // Prevent double play
+  const audioPlayedRef = useRef(false);
   const API_URL = process.env.REACT_APP_API_URL;
 
+  const videoRef = useRef(null);
+  const [consentGiven, setConsentGiven] = useState(false);
+
+  // 🔄 Fetch data and background voice
   useEffect(() => {
     let voiceAudio;
     fetch(`${API_URL}/api/persons/${personId}`)
       .then((res) => res.json())
       .then((data) => {
         setPerson(data);
-        setTheme(data.theme); // 👈 Set theme here
+        setTheme(data.theme);
 
-
-        // 🎵 Load and Auto-Play Background Voice Once
         if (data.voice && !audioPlayedRef.current) {
           voiceAudio = new Audio(data.voice);
           voiceAudio.loop = false;
@@ -41,7 +48,6 @@ const GreetingCardPage = () => {
       })
       .catch(() => alert("Failed to load greeting card"));
 
-    // 🚀 Fireworks on Page Load (Stop after 5 seconds)
     setTimeout(() => setShowFireworks(false), 5000);
 
     return () => {
@@ -50,13 +56,22 @@ const GreetingCardPage = () => {
         voiceAudio.currentTime = 0;
       }
     };
-  }, [personId]);
+  }, [personId, API_URL]);
 
-  // 🗣️ Speech Recognition to Open Card
+
+  useEffect(() => {
+    const hasPermission = sessionStorage.getItem("reactionConsent");
+    if (hasPermission) {
+      startReactionCapture(videoRef, "greeting"); // or greeting/gallery
+    }
+  }, []);
+  
+
+  // 🗣️ Speech Recognition
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      console.warn("Speech recognition not supported in this browser.");
+      console.warn("Speech recognition not supported.");
       return;
     }
 
@@ -78,7 +93,11 @@ const GreetingCardPage = () => {
 
     return () => recognitionRef.current.stop();
   }, []);
-
+  useEffect(() => {
+    startReactionCapture(videoRef, "greeting"); // or gallery/greeting
+    // return () => stopReactionCapture(); // optional, usually leave running
+  }, []);
+  
   const handleCardOpen = () => {
     setOpen(true);
     if (audio && !audioPlayedRef.current) {
@@ -91,29 +110,28 @@ const GreetingCardPage = () => {
 
   if (!person) return <p className="greeting-card-page">Loading...</p>;
 
-  return  (
-    <div className={`greeting-card-page ${open ? "open" : ""} 
-    ${theme === "Grad" ? "grad" : ""}
-    ${theme === "JobCongrats" ? "JobCongrats" : ""}}
-    ${theme === "Anniversary" ? "no-black-bg" : ""}`}  // 💖 No black background
-
+  return (
+    <div
+      className={`greeting-card-page ${open ? "open" : ""}
+      ${theme === "Grad" ? "grad" : ""}
+      ${theme === "JobCongrats" ? "JobCongrats" : ""}
+      ${theme === "Anniversary" ? "no-black-bg" : ""}`}
     >
-
       {theme === "Grad" && <GradBackground />}
-      {theme === "JobCongrats" && <JobBackground/>}
+      {theme === "JobCongrats" && <JobBackground />}
       {theme === "Anniversary" && <AnniversaryBackground />}
       {theme === "CheerUp" && <CheerUpBackground />}
 
-{showFireworks && (
-  <>
-    {theme === "Birthday" && <Fireworks />}
-    {(theme === "LoveNote" || theme === "SorryNote") && <Fireworks />}
+      {showFireworks && (
+        <>
+          {theme === "Birthday" && <Fireworks />}
+          {(theme === "LoveNote" || theme === "SorryNote") && <Fireworks />}
+        </>
+      )}
 
+      {consentGiven && <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />}
 
-  </>
-)}
-
-          {!open && <div className="tap-text cardheading">Say "open card" or click to open!</div>}
+      {!open && <div className="tap-text cardheading">Say "open card" or click to open!</div>}
 
       {open && (
         <div className="cardgreeting-banner">
@@ -129,6 +147,12 @@ const GreetingCardPage = () => {
           <div className="card__panel card__panel--inside-left"></div>
           <div className="card__panel card__panel--inside-right">
             <p className="cardgreeting">{person.customMessage}</p>
+            {sessionStorage.getItem("reactionConsent") && (
+  <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />
+)}
+
+
+
             <button
               className="btn-gallery"
               onClick={(e) => {

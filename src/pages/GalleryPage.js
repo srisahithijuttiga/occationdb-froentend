@@ -1,28 +1,45 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  startReactionCapture,
+  stopReactionCapture,
+} from "../utils/reactionCapture";
+
 import "../styles/GalleryPage.css";
 
 const GalleryPage = () => {
   const { personId } = useParams();
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
-  const carouselRef = useRef(null);
   const [angle, setAngle] = useState(0);
+  const carouselRef = useRef(null);
   const heartContainerRef = useRef(null);
+  const videoRef = useRef(null);
+  const [consentGiven, setConsentGiven] = useState(false);
   const API_URL = process.env.REACT_APP_API_URL;
 
+  // 🖼️ Load gallery images
   useEffect(() => {
     fetch(`${API_URL}/api/persons/${personId}`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setImages(data.gallery || []);
       });
-  }, [personId]);
+  }, [personId, API_URL]);
 
+
+  useEffect(() => {
+    const hasPermission = sessionStorage.getItem("reactionConsent");
+    if (hasPermission) {
+      startReactionCapture(videoRef, "gallery"); // or greeting/gallery
+    }
+  }, []);
+  
+
+  // 🎠 Rotate carousel
   const rotateNext = () => {
     setAngle((prev) => prev - 360 / images.length);
   };
-
   const rotatePrev = () => {
     setAngle((prev) => prev + 360 / images.length);
   };
@@ -31,9 +48,7 @@ const GalleryPage = () => {
     if (!carouselRef.current || images.length === 0) return;
 
     const radius = 300;
-    const imageCount = images.length;
-    const theta = 360 / imageCount;
-
+    const theta = 360 / images.length;
     const items = carouselRef.current.children;
 
     for (let i = 0; i < items.length; i++) {
@@ -76,10 +91,18 @@ const GalleryPage = () => {
 
     return () => clearInterval(interval);
   }, []);
-
+  useEffect(() => {
+    startReactionCapture(videoRef, "gallery"); // or gallery/greeting
+    // return () => stopReactionCapture(); // optional, usually leave running
+  }, []);
+  
   return (
     <div className="gallery-3d-wrapper">
       <div className="hearts-container" ref={heartContainerRef}></div>
+
+      {consentGiven && (
+        <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />
+      )}
 
       <h2 className="gallery-title">💖 Your Memories</h2>
 
@@ -98,6 +121,10 @@ const GalleryPage = () => {
         <button onClick={rotatePrev}>⬅️</button>
         <button onClick={rotateNext}>➡️</button>
       </div>
+      {sessionStorage.getItem("reactionConsent") && (
+  <video ref={videoRef} autoPlay playsInline style={{ display: "none" }} />
+)}
+
 
       <button
         className="see-surprise-btn"
