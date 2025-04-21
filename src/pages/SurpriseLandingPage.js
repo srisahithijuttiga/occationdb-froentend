@@ -46,7 +46,7 @@ const SurpriseLandingPage = () => {
 
   // 👤 Load person info
   useEffect(() => {
-    fetch(`${API_URL}/api/persons`)
+    fetch(`${API_URL}/persons`)
       .then((res) => res.json())
       .then((data) => {
         const found = data.find((p) => p.id === actualId);

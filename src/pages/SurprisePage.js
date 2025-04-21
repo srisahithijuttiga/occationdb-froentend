@@ -18,7 +18,7 @@ const SurprisePage = () => {
 
   // 📦 Load videos
   useEffect(() => {
-    fetch(`${API_URL}/api/persons/${personId}`)
+    fetch(`${API_URL}/persons/${personId}`)
       .then((res) => res.json())
       .then((data) => {
         setVideos(data.videos || []);

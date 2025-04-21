@@ -8,7 +8,7 @@ const CakeOrCardRouter = () => {
   const [person, setPerson] = useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
-    fetch(`${API_URL}/api/persons/${personId}`)
+    fetch(`${API_URL}/persons/${personId}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Theme detected:", data.theme); // 🔍 Debug

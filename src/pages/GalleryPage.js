@@ -20,7 +20,7 @@ const GalleryPage = () => {
 
   // 🖼️ Load gallery images
   useEffect(() => {
-    fetch(`${API_URL}/api/persons/${personId}`)
+    fetch(`${API_URL}/persons/${personId}`)
       .then((res) => res.json())
       .then((data) => {
         setImages(data.gallery || []);
