@@ -18,13 +18,23 @@ const AdminDashboard = () => {
       .catch(() => alert("Failed to fetch persons"));
   }, []);
 
+  
+  // const copyLink = (id) => {
+  //   const link = `${window.location.origin}/surprise/${id}`;
+  //   navigator.clipboard.writeText(link)
+  //     .then(() => alert("Link copied to clipboard!"))
+  //     .catch(() => alert("Failed to copy link"));
+  // };
   const copyLink = (id) => {
     const link = `${window.location.origin}/surprise/${id}`;
-    navigator.clipboard.writeText(link)
-      .then(() => alert("Link copied to clipboard!"))
-      .catch(() => alert("Failed to copy link"));
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link)
+        .then(() => alert("Link copied to clipboard!"))
+        .catch(() => alert("Failed to copy link"));
+    } else {
+      alert("Clipboard API is not supported in this browser.");
+    }
   };
-
   const manageGallery = (id) => {
     navigate(`/admin/gallery/${id}/manage`);
   };
