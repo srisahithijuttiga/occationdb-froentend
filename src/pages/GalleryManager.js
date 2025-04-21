@@ -48,7 +48,7 @@ const GalleryManager = () => {
     if (!selectedVideo) return alert("Please select a video");
     const reader = new FileReader();
     reader.onloadend = async () => {
-      await axios.post(`${API_URL}/persons/${personId}/videos`, {
+      await axios.post(`${API_URL}/api/persons/${personId}/videos`, {
         videoUrl: reader.result, // Upload base64 video data
         name: videoName,
       });
@@ -63,7 +63,7 @@ const GalleryManager = () => {
     if (!selectedVoice) return alert("Please select a voice file");
     const reader = new FileReader();
     reader.onloadend = async () => {
-      await axios.post(`${API_URL}/persons/${personId}/voice`, {
+      await axios.post(`${API_URL}/api/persons/${personId}/voice`, {
         voice: reader.result, // Upload base64 voice data
       });
       setSelectedVoice(null);
