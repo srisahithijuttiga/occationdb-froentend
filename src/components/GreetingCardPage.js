@@ -32,7 +32,7 @@ const GreetingCardPage = () => {
   // 🔄 Fetch data and background voice
   useEffect(() => {
     let voiceAudio;
-    fetch(`${API_URL}/persons/${personId}`)
+    fetch(`${API_URL}/api/persons/${personId}`)
       .then((res) => res.json())
       .then((data) => {
         setPerson(data);

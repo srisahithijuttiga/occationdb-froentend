@@ -23,7 +23,7 @@ const CakePage = () => {
   // 🔊 Play Background Voice
   const fetchVoice = async () => {
     try {
-      const res = await fetch(`${API_URL}/persons/${personId}`);
+      const res = await fetch(`${API_URL}/api/persons/${personId}`);
       const data = await res.json();
 
       if (data.voice && !hasStartedAudio.current) {

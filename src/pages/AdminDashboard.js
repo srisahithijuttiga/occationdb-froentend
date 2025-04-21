@@ -12,7 +12,7 @@ const AdminDashboard = () => {
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${API_URL}/persons`)
+    fetch(`${API_URL}/api/persons`)
       .then((res) => res.json())
       .then((data) => setPersons(data))
       .catch(() => alert("Failed to fetch persons"));
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
     };
 
     try {
-      const res = await fetch(`${API_URL}/persons`, {
+      const res = await fetch(`${API_URL}/api/persons`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newPerson),
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
 
   const deletePerson = async (id) => {
     try {
-      const res = await fetch(`${API_URL}/persons/${id}`, {
+      const res = await fetch(`${API_URL}/api/persons/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
 
   const fetchReviews = async (id) => {
     try {
-      const res = await fetch(`${API_URL}/reviews/${id}`);
+      const res = await fetch(`${API_URL}/api/reviews/${id}`);
       const data = await res.json();
       const updatedPersons = persons.map((p) =>
         p.id === id ? { ...p, reviews: data, showReviews: true } : p
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
 
   const deleteReview = async (personId, reviewId) => {
     try {
-      await fetch(`${API_URL}/reviews/${personId}/${reviewId}`, {
+      await fetch(`${API_URL}/api/reviews/${personId}/${reviewId}`, {
         method: "DELETE",
       });
       fetchReviews(personId); // Refresh after delete
