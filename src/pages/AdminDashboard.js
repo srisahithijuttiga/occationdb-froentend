@@ -27,14 +27,29 @@ const AdminDashboard = () => {
   // };
   const copyLink = (id) => {
     const link = `${window.location.origin}/surprise/${id}`;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(link)
-        .then(() => alert("Link copied to clipboard!"))
-        .catch(() => alert("Failed to copy link"));
-    } else {
-      alert("Clipboard API is not supported in this browser.");
+  
+    // ✅ Fallback that works everywhere
+    const textarea = document.createElement("textarea");
+    textarea.value = link;
+    textarea.style.position = "fixed";   // prevent scroll jump
+    textarea.style.opacity = "0";        // invisible to user
+    document.body.appendChild(textarea);
+    textarea.select();
+  
+    try {
+      const success = document.execCommand("copy");
+      if (success) {
+        alert("Link copied to clipboard!");
+      } else {
+        alert("Copy failed. Please copy manually.");
+      }
+    } catch (err) {
+      alert("Clipboard operation not supported.");
     }
+  
+    document.body.removeChild(textarea);
   };
+  
   const manageGallery = (id) => {
     navigate(`/admin/gallery/${id}/manage`);
   };
