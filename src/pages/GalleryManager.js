@@ -73,7 +73,7 @@ const GalleryManager = () => {
   };
 
   const deleteImage = async (index) => {
-    await axios.delete(`${API_URL}api//persons/${personId}/gallery/${index}`);
+    await axios.delete(`${API_URL}/api/persons/${personId}/gallery/${index}`);
     fetchPerson(); // Re-fetch to display updated media
   };
 
